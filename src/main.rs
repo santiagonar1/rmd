@@ -6,6 +6,10 @@ struct Particle {
     force_old: Vec<f64>,
 }
 
+struct Grid {
+    particles: Vec<Particle>,
+}
+
 impl Particle {
     fn update_position(&mut self, delta_t: f64) {
         let a = (delta_t * 0.5) / self.mass;
@@ -30,6 +34,26 @@ impl Particle {
         for velocity in self.velocity.iter_mut() {
             *velocity += a * (self.force[dim] + self.force_old[dim]);
             dim += 1;
+        }
+    }
+}
+
+impl Grid {
+    fn update_positions(&mut self, delta_t: f64) {
+        for particle in self.particles.iter_mut() {
+            particle.update_position(delta_t);
+        }
+    }
+
+    fn store_old_forces(&mut self) {
+        for particle in self.particles.iter_mut() {
+            particle.store_old_force();
+        }
+    }
+
+    fn update_velocities(&mut self, delta_t: f64) {
+        for particle in self.particles.iter_mut() {
+            particle.update_velocity(delta_t);
         }
     }
 }
