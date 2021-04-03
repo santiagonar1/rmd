@@ -13,27 +13,21 @@ struct Grid {
 impl Particle {
     fn update_position(&mut self, delta_t: f64) {
         let a = (delta_t * 0.5) / self.mass;
-        let mut dim = 0;
-        for position in self.position.iter_mut() {
-            *position += delta_t * (self.velocity[dim] + a * self.force[dim]);
-            dim += 1;
+        for dim in 0..self.position.len() {
+            self.position[dim] += delta_t * (self.velocity[dim] + a * self.force[dim]);
         }
     }
 
     fn store_old_force(&mut self) {
-        let mut dim = 0;
-        for force in self.force.iter_mut() {
-            self.force_old[dim] = *force;
-            dim += 1;
+        for dim in 0..self.force.len() {
+            self.force_old[dim] = self.force[dim];
         }
     }
 
     fn update_velocity(&mut self, delta_t: f64) {
         let a = (delta_t * 0.5) / self.mass;
-        let mut dim = 0;
-        for velocity in self.velocity.iter_mut() {
-            *velocity += a * (self.force[dim] + self.force_old[dim]);
-            dim += 1;
+        for dim in 0..self.velocity.len() {
+            self.velocity[dim] += a * (self.force[dim] + self.force_old[dim]);
         }
     }
 }
