@@ -159,7 +159,7 @@ mod tests {
 
     #[test]
     fn can_update_force() {
-        let mut particle1 = Particle {
+        let particle1 = Particle {
             mass: 20.0,
             position: vec![0.0, 0.0, 0.0],
             velocity: vec![4.0, 5.0, 6.0],
@@ -167,7 +167,7 @@ mod tests {
             force_old: vec![1.0, 2.0, 3.0],
         };
 
-        let mut particle2 = Particle {
+        let particle2 = Particle {
             mass: 40.0,
             position: vec![1.0, 2.0, 3.0],
             velocity: vec![7.0, 8.0, 9.0],
