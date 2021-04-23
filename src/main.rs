@@ -1,5 +1,3 @@
-use assert_approx_eq::assert_approx_eq;
-
 struct Particle {
     mass: f64,
     position: Vec<f64>,
@@ -77,7 +75,6 @@ impl Grid {
                 *f = 0.0;
             }
         }
-
         let num_particles = self.particles.len();
         for i in 0..num_particles {
             for j in 0..num_particles {
@@ -97,6 +94,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assert_approx_eq::assert_approx_eq;
 
     #[test]
     fn can_create_particle() {
