@@ -10,6 +10,24 @@ struct Grid {
     particles: Vec<Particle>,
 }
 
+fn calculate_force(p1: &Particle, p2: &Particle) -> Vec<f64> {
+    let mut distance: f64 = 0.0;
+    let num_dimensions = p1.position.len();
+
+    for i in 0..num_dimensions {
+        distance += (p1.position[i] - p2.position[i]).powi(2);
+    }
+
+    let f = (p1.mass * p2.mass) / (distance.sqrt() * distance);
+    let mut force = p1.force.clone();
+
+    for i in 0..num_dimensions {
+        force[i] += f * (p2.position[i] - p1.position[i]);
+    }
+
+    force
+}
+
 impl Particle {
     fn update_position(&mut self, delta_t: f64) {
         let a = (delta_t * 0.5) / self.mass;
@@ -50,6 +68,23 @@ impl Grid {
             particle.update_velocity(delta_t);
         }
     }
+
+    fn update_forces(&mut self) {
+        for particle in self.particles.iter_mut() {
+            for f in particle.force.iter_mut() {
+                *f = 0.0;
+            }
+        }
+        let num_particles = self.particles.len();
+        for i in 0..num_particles {
+            for j in 0..num_particles {
+                if i != j {
+                    self.particles[i].force =
+                        calculate_force(&self.particles[i], &self.particles[j]);
+                }
+            }
+        }
+    }
 }
 
 fn main() {
@@ -59,6 +94,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assert_approx_eq::assert_approx_eq;
 
     #[test]
     fn can_create_particle() {
@@ -117,5 +153,34 @@ mod tests {
 
         particle.update_velocity(0.5);
         assert_eq!(particle.velocity, [4.1, 5.125, 6.15]);
+    }
+
+    #[test]
+    fn can_update_force() {
+        let particle1 = Particle {
+            mass: 20.0,
+            position: vec![0.0, 0.0, 0.0],
+            velocity: vec![4.0, 5.0, 6.0],
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let particle2 = Particle {
+            mass: 40.0,
+            position: vec![1.0, 2.0, 3.0],
+            velocity: vec![7.0, 8.0, 9.0],
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let mut grid = Grid {
+            particles: vec![particle1, particle2],
+        };
+
+        grid.update_forces();
+        let correct_result: Vec<f64> = vec![-15.27207096642, -30.5441419328, -45.8162128993];
+        for i in 0..correct_result.len() {
+            assert_approx_eq!(grid.particles[1].force[i], correct_result[i]);
+        }
     }
 }
