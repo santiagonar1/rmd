@@ -183,4 +183,52 @@ mod tests {
             assert_approx_eq!(grid.particles[1].force[i], correct_result[i]);
         }
     }
+
+    #[test]
+    fn can_update_positions() {
+        let particle1 = Particle {
+            mass: 20.0,
+            position: vec![0.0, 0.0, 0.0],
+            velocity: vec![4.0, 5.0, 6.0],
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let particle2 = Particle {
+            mass: 40.0,
+            position: vec![1.0, 2.0, 3.0],
+            velocity: vec![7.0, 8.0, 9.0],
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        // TODO: Copy trate could remove the need of this
+        let mut particle3 = Particle {
+            mass: 20.0,
+            position: vec![0.0, 0.0, 0.0],
+            velocity: vec![4.0, 5.0, 6.0],
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let mut particle4 = Particle {
+            mass: 40.0,
+            position: vec![1.0, 2.0, 3.0],
+            velocity: vec![7.0, 8.0, 9.0],
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let delta_t = 0.5;
+
+        let mut grid = Grid {
+            particles: vec![particle1, particle2],
+        };
+
+        grid.update_positions(delta_t);
+        particle3.update_position(delta_t);
+        particle4.update_position(delta_t);
+        assert_eq!(grid.particles[0].position, particle3.position);
+        assert_eq!(grid.particles[1].position, particle4.position);
+    }
 }
