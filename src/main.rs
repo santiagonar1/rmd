@@ -233,4 +233,54 @@ mod tests {
         assert_eq!(grid.particles[0].position, particle1.position);
         assert_eq!(grid.particles[1].position, particle2.position);
     }
+
+    #[test]
+    fn can_update_velocities() {
+        let velocity_first_particle = vec![4.0, 5.0, 6.0];
+        let velocity_second_particle = vec![7.0, 8.0, 9.0];
+        let delta_t = 0.5;
+
+        let particle1 = Particle {
+            mass: 20.0,
+            position: vec![0.0, 0.0, 0.0],
+            velocity: velocity_first_particle.clone(),
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let particle2 = Particle {
+            mass: 40.0,
+            position: vec![1.0, 2.0, 3.0],
+            velocity: velocity_second_particle.clone(),
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let mut grid = Grid {
+            particles: vec![particle1, particle2],
+        };
+
+        // TODO: Copy trate could remove the need of this
+        let mut particle1 = Particle {
+            mass: 20.0,
+            position: vec![0.0, 0.0, 0.0],
+            velocity: velocity_first_particle.clone(),
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        let mut particle2 = Particle {
+            mass: 40.0,
+            position: vec![1.0, 2.0, 3.0],
+            velocity: velocity_second_particle.clone(),
+            force: vec![7.0, 8.0, 9.0],
+            force_old: vec![1.0, 2.0, 3.0],
+        };
+
+        grid.update_velocities(delta_t);
+        particle1.update_velocity(delta_t);
+        particle2.update_velocity(delta_t);
+        assert_eq!(grid.particles[0].velocity, particle1.velocity);
+        assert_eq!(grid.particles[1].velocity, particle2.velocity);
+    }
 }
