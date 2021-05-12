@@ -1,7 +1,7 @@
 use crate::particle::Particle;
 
 pub struct Grid {
-    particles: Vec<Particle>,
+    pub particles: Vec<Particle>,
 }
 
 fn calculate_force(p1: &Particle, p2: &Particle) -> Vec<f64> {
