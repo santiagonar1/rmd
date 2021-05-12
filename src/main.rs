@@ -1,9 +1,11 @@
+mod simulation;
 mod grid;
 mod particle;
 
-use crate::grid::Grid;
-use crate::particle::Particle;
+use crate::simulation::Simulation;
+
 
 fn main() {
-    println!("Hello, world!");
+    let filepath = "simulation.dat";
+    let mut s = simulation::load_simulation(filepath);
 }

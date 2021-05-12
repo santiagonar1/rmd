@@ -1,7 +1,7 @@
 use crate::particle::Particle;
 
 pub struct Grid {
-    particles: Vec<Particle>,
+    pub particles: Vec<Particle>,
 }
 
 fn calculate_force(p1: &Particle, p2: &Particle) -> Vec<f64> {
@@ -23,6 +23,10 @@ fn calculate_force(p1: &Particle, p2: &Particle) -> Vec<f64> {
 }
 
 impl Grid {
+    pub fn add_particle(&mut self, particle: Particle) {
+        self.particles.push(particle);
+    }
+
     pub fn update_positions(&mut self, delta_t: f64) {
         for particle in self.particles.iter_mut() {
             particle.update_position(delta_t);
