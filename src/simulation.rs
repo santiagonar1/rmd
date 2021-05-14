@@ -75,6 +75,19 @@ pub fn load_simulation(filepath: &str) -> Simulation {
     }
 }
 
+impl Simulation {
+   pub fn simulate(&mut self) {
+       let mut time = 0.0;
+       self.grid.update_forces();
+       while time < self.t_end {
+           time += self.delta_t;
+           self.grid.update_positions(self.delta_t);
+           self.grid.update_forces();
+           self.grid.update_velocities(self.delta_t);
+       }
+   }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
