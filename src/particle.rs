@@ -7,6 +7,15 @@ pub struct Particle {
 }
 
 impl Particle {
+    pub fn new() -> Particle {
+       Particle {
+           mass: 0.0,
+           position: vec![0.0, 0.0],
+           velocity: vec![0.0, 0.0],
+           force: vec![0.0, 0.0],
+           force_old: vec![0.0, 0.0],
+       }
+    }
     pub fn update_position(&mut self, delta_t: f64) {
         let a = (delta_t * 0.5) / self.mass;
         for dim in 0..self.position.len() {

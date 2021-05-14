@@ -61,13 +61,11 @@ pub fn load_simulation(filepath: &str) -> Simulation {
         }
         buf.clear();
 
-        grid.add_particle(Particle {
-            mass,
-            position,
-            velocity,
-            force: vec![0.0, 0.0],
-            force_old: vec![0.0, 0.0],
-        });
+        let mut particle = Particle::new();
+        particle.mass = mass;
+        particle.position = position;
+        particle.velocity = velocity;
+        grid.add_particle(particle);
     }
 
     Simulation {
